@@ -18,6 +18,6 @@ module.exports = {
       },
     ],
     'react-native-paper/babel',
-    'react-native-reanimated/plugin', // Este debe ir al final segun la documentaciÃ³n de react-native-reanimated
+    //'react-native-reanimated/plugin', // Este debe ir al final segun la documentaciÃ³n de react-native-reanimated
   ],
 };
