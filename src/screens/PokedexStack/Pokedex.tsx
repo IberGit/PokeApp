@@ -1,12 +1,16 @@
-import { StyleSheet, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
 
 import { NavigationProp } from '@react-navigation/native';
 
-import { Text } from 'react-native-paper';
 import { getInitialPokemonList } from '@services/pokeApi';
-import { EMPTY_POKEDEX, PokedexList } from '@utils/interfaces/Pokedex';
+import {
+  EMPTY_POKEDEX,
+  PokedexList,
+  PokedexResultItem,
+} from '@utils/interfaces/Pokedex';
 import DemoResponse from '@services/pokedexApiDemoResponse.json';
+import PokedexItem from '@components/Pokedex/PokedexItem';
 
 export default function Pokedex({
   navigation,
@@ -14,11 +18,10 @@ export default function Pokedex({
   navigation: NavigationProp<any>;
 }) {
   const [pokedex, setPokedex] = useState<PokedexList>(DemoResponse);
-  /* const [pokedex, setPokedex] = useState<PokedexList>(EMPTY_POKEDEX);
   const [startAt, setStartAt] = useState<number>(0);
-  const [LimitedTo, seLimitedTo] = useState<number>(20); */
+  const [limitedTo, seLimitedTo] = useState<number>(20);
 
-  const getData = async ({
+  /* const getData = async ({
     offset,
     limit,
   }: {
@@ -36,20 +39,27 @@ export default function Pokedex({
       setPokedex(EMPTY_POKEDEX);
     }
   };
-  //getData({ offset: startAt, limit: LimitedTo });
+  getData({ offset: startAt, limit: limitedTo }); */
   return (
     <View style={styles.container}>
-      <Text>
-        Pokedex - Start: {pokedex?.results[0]?.name} - Lenght:{' '}
-        {pokedex?.results.length}
-      </Text>
+      <FlatList
+        data={pokedex.results.slice(startAt, limitedTo)}
+        keyExtractor={item => item.name}
+        renderItem={({ item, index }) => {
+          const pokemon: PokedexResultItem = item;
+          return (
+            <View style={styles.container}>
+              <PokedexItem pokemon={pokemon} id={startAt + index + 1} />
+            </View>
+          );
+        }}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '##f0f0f0',
+    padding: 5,
   },
 });
