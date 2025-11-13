@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, Text } from 'react-native-paper';
 import { NavigationProp } from '@react-navigation/native';
 import {
-  EMPTY_POKEMON,
-  Pokemon as intPokemon,
-} from '@utils/interfaces/Pokemon';
-import { getPokemonDetails } from '@services/pokeApi';
+  EMPTY_POKEMON_BASE,
+  PokemonBase as intPokemon,
+} from '@utils/interfaces/PokemonBase';
+import { getPokemon } from '@services/pokeApi';
 
 export default function Pokemon({
   navigation,
@@ -16,30 +16,32 @@ export default function Pokemon({
   navigation: NavigationProp<any>;
   route: any;
 }) {
-  const [pokemonDetails, setPokemonDetails] =
-    useState<intPokemon>(EMPTY_POKEMON);
+  const [pokemonBase, setPokemonBase] =
+    useState<intPokemon>(EMPTY_POKEMON_BASE);
   const { pokeNameOrId } = route.params;
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await getPokemonDetails({
+        const response = await getPokemon({
           nameOrId: pokeNameOrId,
+          dataType: 'Base',
         });
-        setPokemonDetails(response);
+        setPokemonBase(response);
       } catch (error) {
         console.log('Error -> ', error);
-        setPokemonDetails({ ...EMPTY_POKEMON, name: 'No encontrado' });
+        setPokemonBase({ ...EMPTY_POKEMON_BASE, name: 'No encontrado' });
       }
     };
     getData();
   }, [pokeNameOrId]);
+
   return (
     <View style={styles.container}>
       <Text>Pokemon: {pokeNameOrId}</Text>
 
       <View style={styles.container}>
         <Text variant="displaySmall">
-          {pokemonDetails.name} - {pokemonDetails.abilities[0]?.ability?.name}
+          {pokemonBase.name} - {pokemonBase.types[0].type.name}
         </Text>
       </View>
       <Button

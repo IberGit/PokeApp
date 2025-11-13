@@ -9,7 +9,7 @@ let pokemon = `/pokemon/${dexNumber}/`
 
 */
 
-export interface Pokemon {
+export interface PokemonDetails {
   abilities: Ability[];
   base_experience: number;
   cries: Cries;
@@ -383,8 +383,7 @@ export interface Type2 {
   url: string;
 }
 
-// EMPTU POKEMON
-export const EMPTY_POKEMON: Pokemon = {
+export const EMPTY_POKEMON_DETAILS: PokemonDetails = {
   abilities: [],
   base_experience: 0,
   forms: [],

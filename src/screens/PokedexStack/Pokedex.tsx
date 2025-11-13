@@ -1,43 +1,48 @@
 import { StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
-
-import { Button, TextInput } from 'react-native-paper';
-import { Text } from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
 
 import { NavigationProp } from '@react-navigation/native';
+
+import { Text } from 'react-native-paper';
+import { getInitialPokemonList } from '@services/pokeApi';
+import { EMPTY_POKEDEX, PokedexList } from '@utils/interfaces/Pokedex';
+import DemoResponse from '@services/pokedexApiDemoResponse.json';
 
 export default function Pokedex({
   navigation,
 }: {
   navigation: NavigationProp<any>;
 }) {
-  const [pokeNameOrId, setPokeNameOrId] = useState<string | number>('');
+  const [pokedex, setPokedex] = useState<PokedexList>(DemoResponse);
+  /* const [pokedex, setPokedex] = useState<PokedexList>(EMPTY_POKEDEX);
+  const [startAt, setStartAt] = useState<number>(0);
+  const [LimitedTo, seLimitedTo] = useState<number>(20); */
+
+  const getData = async ({
+    offset,
+    limit,
+  }: {
+    offset: number;
+    limit: number;
+  }) => {
+    try {
+      const response = await getInitialPokemonList({
+        offset: offset,
+        limit: limit,
+      });
+      setPokedex(response);
+    } catch (error) {
+      console.log('Error -> ', error);
+      setPokedex(EMPTY_POKEDEX);
+    }
+  };
+  //getData({ offset: startAt, limit: LimitedTo });
   return (
     <View style={styles.container}>
-      <Text>Pokedex</Text>
-
-      <View style={styles.container}>
-        <TextInput
-          placeholder="Enter Pokemon name or number"
-          onChangeText={text => setPokeNameOrId(text)}
-        />
-        <Button
-          icon="camera"
-          mode="contained"
-          onPress={() =>
-            navigation.navigate('Pokemon', { pokeNameOrId: pokeNameOrId })
-          }
-        >
-          Go to Pokemon Screen
-        </Button>
-        <Button
-          icon="camera"
-          mode="contained"
-          onPress={() => navigation.navigate('PokeType')}
-        >
-          Go to PokeType Screen
-        </Button>
-      </View>
+      <Text>
+        Pokedex - Start: {pokedex?.results[0]?.name} - Lenght:{' '}
+        {pokedex?.results.length}
+      </Text>
     </View>
   );
 }
@@ -45,7 +50,6 @@ export default function Pokedex({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '##f0f0f0',
   },
 });
