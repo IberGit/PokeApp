@@ -10,7 +10,6 @@ import {
 } from '@utils/interfaces/Pokedex';
 import { EMPTY_POKEMON_BASE } from '@utils/interfaces/PokemonBase';
 import { getInitialPokemonList } from '@services/pokeApi';
-import DemoResponse from '@services/pokedexApiDemoResponse.json';
 import PokedexItem from '@components/Pokedex/PokedexItem';
 
 export default function Pokedex({
@@ -18,7 +17,7 @@ export default function Pokedex({
 }: {
   navigation: NavigationProp<any>;
 }) {
-  const [pokedex, setPokedex] = useState<PokedexList>(DemoResponse);
+  const [pokedex, setPokedex] = useState<PokedexList>(EMPTY_POKEDEX);
   const [startAt, setStartAt] = useState<number>(0);
   const [limitedTo, setLimitedTo] = useState<number>(5);
   const [pagination, setPagination] = useState<number>(3);
