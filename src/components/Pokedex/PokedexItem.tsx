@@ -1,9 +1,12 @@
 import { View, Image, StyleSheet } from 'react-native';
 import React from 'react';
+
+import { Text } from 'react-native-paper';
+
+import { PokedexResultItem } from '@utils/interfaces/Pokedex';
+import { capitalizeFirst } from '@utils/StringsHelper';
 import { VStack } from '@components/IOSLikeStacks/VStack';
 import { HStack } from '@components/IOSLikeStacks/HStack';
-import { Text } from 'react-native-paper';
-import { PokedexResultItem } from '@utils/interfaces/Pokedex';
 import { Spacer } from '@components/IOSLikeStacks/Spacer';
 
 export default function PokedexItem({
@@ -29,9 +32,7 @@ export default function PokedexItem({
           )}
         >
           <Spacer />
-          <Text variant="titleMedium">
-            Name: {pokemon.name} - Number: {id}
-          </Text>
+          <Text variant="titleLarge">{capitalizeFirst(pokemon.name)}</Text>
           <Spacer />
         </HStack>
         <HStack
@@ -92,8 +93,14 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   pokeImage: {
-    alignSelf: 'center',
-    width: '100%',
-    height: '100%',
+    //alignSelf: 'center',
+    //width: '100%',
+    //height: '100%',
+
+    //Trying new style
+    top: '-50%',
+    left: '-40%',
+    width: '200%',
+    height: '200%',
   },
 });
